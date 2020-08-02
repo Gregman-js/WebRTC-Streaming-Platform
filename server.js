@@ -13,12 +13,27 @@ const server = require('https').Server(options, app)
 const io = require('socket.io')(server)
 const shortid = require('shortid');
 
+// ports
+var httpPort = 3000
+var httpsPort = 3001
+
+// args
+var args = process.argv.slice(2);
+args.forEach(arg => {
+    if(arg.includes('--http-port=')) {
+        httpPort = parseInt(arg.split('=')[1])
+    }
+    if(arg.includes('--https-port=')) {
+        httpsPort = parseInt(arg.split('=')[1])
+    }
+})
+
 // redirection
 var http = require('http');
 http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'].split(':')[0] + ":3001" + req.url });
     res.end();
-}).listen(3000);
+}).listen(httpPort);
 
 // ejs
 app.set('view engine', 'ejs')
@@ -68,4 +83,6 @@ io.on('connection', socket => {
     })
 })
 
-server.listen(3001)
+server.listen(httpsPort)
+console.log("Server started, port " + httpsPort);
+console.log("Check: https://192.168.1.2:" + httpsPort);

@@ -19,3 +19,10 @@ rm csr.pem
 ```bash
 npm run devStart
 ```
+OR
+```bash
+node server.js
+```
+### Parameters
+- `--http-port=3000` http port (default: 3000)
+- `--https-port=3001` https port (default: 3001)
