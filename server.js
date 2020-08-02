@@ -11,7 +11,7 @@ const server = require('https').Server(options, app)
 
 
 const io = require('socket.io')(server)
-const uuid = require('uuid')
+const shortid = require('shortid');
 
 // redirection
 var http = require('http');
@@ -30,13 +30,13 @@ app.use('/peer', ExpressPeerServer(server, {debug:true}))
 
 app.get('/', (req, res) => {
     res.render('home', {
-        newRoomId: uuid.v4(),
+        newRoomId: shortid.generate(),
         rooms: rooms
     })
 })
 
 app.get('/new-room', (req, res) => {
-    res.redirect('/' + uuid.v4())
+    res.redirect('/' + shortid.generate())
 })
 
 app.get('/:room', (req, res) => {
